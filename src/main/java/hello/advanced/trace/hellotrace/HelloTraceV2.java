@@ -20,8 +20,8 @@ public class HelloTraceV2 {
         return new TraceStatus(traceId, startTimeMs, message);
     }
 
+    // V2에서 추가
     public TraceStatus beginSync(TraceId beforeTraceId, String message) {
-//        TraceId traceId = new TraceId();
         TraceId nextId = beforeTraceId.createNextId();
         long startTimeMs = System.currentTimeMillis();
         log.info("[{}] {}{}", nextId.getId(), addSpace(START_PREFIX, nextId.getLevel()), message);
@@ -47,10 +47,15 @@ public class HelloTraceV2 {
         }
     }
 
+    // level=0
+    // level=1 |-->
+    // level=2 |   |-->
+    // level=2 ex |   |<X-
+    // level=1 ex |<X-
     private String addSpace(String prefix, int level) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < level; i++) {
-            sb.append((i == level - 1) ? "|" + prefix : "|  ");
+            sb.append((i == level - 1) ? "|" + prefix : "|   ");
         }
         return sb.toString();
     }
